@@ -1,16 +1,19 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 
 interface Note {
   id: number
   title: string
   content: string
+  createdAt: string
 }
 
-const notes = ref<Note[]>([
-  { id: 1, title: 'Einkaufen', content: 'Milch, Brot, Eier' },
-  { id: 2, title: 'WebTech', content: 'Milestone 2 abgeben' },
-])
+const notes = ref<Note[]>([])
+
+onMounted(async () => {
+  const res = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/notes`)
+  notes.value = await res.json()
+})
 </script>
 
 <template>
